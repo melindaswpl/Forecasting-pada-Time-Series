@@ -1,0 +1,12 @@
+#Data
+Indonesia_covid <- read.csv(file ='covid_19_indonesia_time_series_all.csv',
+                            fileEncoding="UTF-8-BOM", na.strings = '..')
+View(Indonesia_covid)
+
+#Wilayah
+Data_SulSel <- subset (Indonesia_covid, Location == "Sulawesi Selatan")
+Data_kasus_SulSel <- Data_SulSel[c(1,3,11)]
+Data_kasus_SulSel$Date <- strptime(as.character(Data_kasus_SulSel$Date), "%m/%d/%Y")
+format(Data_kasus_SulSel$Date, "%Y-%m-%d")
+Data_kasus_SulSel$Date <- as.Date(Data_kasus_SulSel$Date)
+View(Data_kasus_SulSel)
