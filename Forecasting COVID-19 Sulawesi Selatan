@@ -1,0 +1,78 @@
+#Data
+Indonesia_covid <- read.csv(file ='covid_19_indonesia_time_series_all.csv',
+                            fileEncoding="UTF-8-BOM", na.strings = '..')
+View(Indonesia_covid)
+
+#Wilayah
+Data_SulSel <- subset (Indonesia_covid, Location == "Sulawesi Selatan")
+Data_kasus_SulSel <- Data_SulSel[c(1,3,11)]
+Data_kasus_SulSel$Date <- strptime(as.character(Data_kasus_SulSel$Date), "%m/%d/%Y")
+format(Data_kasus_SulSel$Date, "%Y-%m-%d")
+Data_kasus_SulSel$Date <- as.Date(Data_kasus_SulSel$Date)
+View(Data_kasus_SulSel)
+
+#Plot Data Total Active Kasus Seluruh Indonesia
+cov19_indo <- data.frame(subset(Indonesia_covid , Location == "Indonesia"))
+
+cov19_indo$Date <- strptime(as.character(cov19_indo$Date), "%m/%d/%Y")
+format(cov19_indo$Date, "%Y-%m-%d")
+cov19_indo$Date <- as.Date(cov19_indo$Date)
+
+Indonesia <- ggplot(cov19_indo, aes(x=Date, y=Total.Active.Cases)) +
+  geom_line() + 
+  xlab("")
+Indonesia
+
+
+#Plot Data Total Active Cases Provinsi Sulawesi Selatan
+library(plotly)
+plotly::plot_ly(data = Data_kasus_SulSel) %>%
+  plotly::add_trace(
+    x = ~Date,
+    y = ~Total.Active.Cases,
+    type = "scatter",
+    mode = "lines+markers",
+    name = "Total Kasus",
+    line = list(color = 'blue'),
+    marker = list(color = 'blue')
+  ) %>%
+  plotly::layout(
+    title = "Kasus Covid 19 Sul-Sel",
+    yaxis = list(title = "Jumlah kasus Aktif"),
+    xaxis = list(title = "Tanggal"),
+    legend = list(x = 0.1, y = 0.9),
+    hovermode = "compare"
+  )
+
+# Sumarry data
+mean(Data_kasus_SulSel$Total.Active.Cases)
+median(Data_kasus_SulSel$Total.Active.Cases)
+max(Data_kasus_SulSel$Total.Active.Cases)
+min(Data_kasus_SulSel$Total.Active.Cases)
+var(Data_kasus_SulSel$Total.Active.Cases)
+str(Data_kasus_SulSel)
+
+#Plot Data Total Cases di Provisi Sulawesi Selatan
+Data_Cases <- subset (Indonesia_covid, Location =="Sulawesi Selatan")
+Data_Cases$Date <- strptime(as.character(Data_Cases$Date), "%m/%d/%Y")
+format(Data_Cases$Date, "%Y-%m-%d")
+Data_Cases$Date <- as.Date(Data_Cases$Date)
+view(Data_Cases)
+
+a <- ggplot(Data_Cases, aes(x=Date, y=Total.Cases)) +
+  geom_line() + 
+  xlab("")
+a
+
+#Plot Berganda Data Total.Deaths dan Total.Recovered
+colors <- c("Total.Deaths" = "blue", "Total.Recovered" = "red")
+
+b <- ggplot(Data_Cases , aes(x=Date)) +
+  geom_line(aes(y=Total.Deaths, color = "Total.Deaths")) +
+  geom_line(aes(y=Total.Recovered, color = "Total.Recovered")) +
+  theme_light() +
+  labs(x = "Date",
+       y = "Frequency",
+       color = "Legend") +
+  scale_color_manual(values = colors) 
+b
