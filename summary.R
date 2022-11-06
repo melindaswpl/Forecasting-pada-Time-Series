@@ -1,0 +1,6 @@
+mean(Data_kasus_SulSel$Total.Active.Cases)
+median(Data_kasus_SulSel$Total.Active.Cases)
+max(Data_kasus_SulSel$Total.Active.Cases)
+min(Data_kasus_SulSel$Total.Active.Cases)
+var(Data_kasus_SulSel$Total.Active.Cases)
+str(Data_kasus_SulSel)
